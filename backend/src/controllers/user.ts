@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import IUser from '../interfaces/user'
-import User from '../models/user'
+import User from '../models/User'
 import { createHashedPassword, isValidPassword } from '../utils/hashPassword'
 import { generateToken } from '../utils/jwt'
 import { validateRegistration, validateSignin } from '../utils/userValidation'
@@ -31,6 +31,7 @@ const registerController = async (req: Request, res: Response) => {
         data: {
             id: result.id,
             email: result.email,
+            verified: result.verified,
             token,
         },
     })
@@ -62,6 +63,7 @@ const signinController = async (req: Request, res: Response) => {
         data: {
             id: user.id,
             email: user.email,
+            verified: user.verified,
             token,
         },
     })
