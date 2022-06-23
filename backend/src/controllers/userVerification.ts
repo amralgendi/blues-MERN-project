@@ -8,7 +8,7 @@ const createEmailVerificationCode = async (user: IUser): Promise<void> => {
         code: randomCodeGenerator(),
     })
 
-    const res = await code.save()
+    await code.save()
 }
 
 export { createEmailVerificationCode }

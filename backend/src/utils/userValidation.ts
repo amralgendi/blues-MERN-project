@@ -1,3 +1,7 @@
+interface resetPasswordValidationError {
+    password?: string
+    confirmPassword?: string
+}
 interface signinValidationError {
     email?: string
     password?: string
@@ -37,4 +41,16 @@ const validateSignin = (
 
     return { valid: Object.keys(errors).length < 1, errors }
 }
-export { validateRegistration, validateSignin }
+
+const validatePasswordReset = (password: string, confirmPassword: string) => {
+    console.log(password, confirmPassword)
+
+    const errors: resetPasswordValidationError = {}
+    if (!password) errors.password = 'Password Required'
+    else if (password.length < 8)
+        errors.password = 'Password length must exceed eight characters'
+    if (confirmPassword !== password)
+        errors.confirmPassword = "Passwords don't match"
+    return { valid: Object.keys(errors).length < 1, errors }
+}
+export { validateRegistration, validateSignin, validatePasswordReset }

@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import { stringify } from 'querystring'
 import IUser from '../interfaces/user'
 
 interface encodedToken {

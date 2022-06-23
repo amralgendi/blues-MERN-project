@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
-import User from '../models/User'
 
 const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     const { authentication } = req.headers
@@ -37,5 +36,15 @@ const checkAuth = (req: Request, res: Response, next: NextFunction) => {
         })
     }
 }
-
-export { checkAuth }
+const checkVerified = (req: Request, res: Response, next: NextFunction) => {
+    const { verified } = res.locals['user']
+    if (!verified)
+        res.status(400).json({
+            success: false,
+            errors: {
+                verified: 'User not Verified',
+            },
+        })
+    next()
+}
+export { checkAuth, checkVerified }

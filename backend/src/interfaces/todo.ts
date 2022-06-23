@@ -5,11 +5,11 @@ interface ITodo extends Document {
     userEmail: string
     title: string
     description: string
-    priority: string
-    status: string
+    priority: number
+    status: number
     startDate: string
     endDate: string
     user: PopulatedDoc<Document<Schema.Types.ObjectId> & IUser>
+    createdAt: string
 }
-
 export default ITodo

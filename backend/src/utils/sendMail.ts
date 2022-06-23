@@ -25,7 +25,10 @@ const sendMail = async (options: messageOptionsInput): Promise<void> => {
     try {
         await client.sendMail(messageOptions)
     } catch (error) {
-        console.log(error)
+        let message = 'Error with NodeMailer'
+        if (error instanceof Error) message = error.message
+
+        throw new Error(message)
     }
 }
 
@@ -40,4 +43,35 @@ const sendVerificationCode = async (
     })
 }
 
-export { sendVerificationCode }
+const sendTestMail = async () => {
+    const msgOptions: messageOptionsInput = {
+        to: process.env.EMAIL as string,
+        subject: 'test',
+        text: 'This is a test email',
+    }
+    try {
+        await sendMail(msgOptions)
+    } catch (error) {
+        let message = 'Error with NodeMailer'
+        if (error instanceof Error) message = error.message
+
+        throw new Error(message)
+    }
+}
+const sendPasswordResetLink = async (email: string, url: string) => {
+    const msgOptions: messageOptionsInput = {
+        to: email,
+        subject: 'Password Reset',
+        text: 'Your password reset link is ' + url,
+    }
+    try {
+        await sendMail(msgOptions)
+    } catch (error) {
+        let message = 'Error with NodeMailer'
+        if (error instanceof Error) message = error.message
+
+        throw new Error(message)
+    }
+}
+
+export { sendVerificationCode, sendTestMail, sendPasswordResetLink }

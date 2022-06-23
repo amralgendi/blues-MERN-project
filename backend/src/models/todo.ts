@@ -6,18 +6,22 @@ const todoSchema = new Schema({
     title: String,
     description: String,
     priority: {
-        type: String,
-        enum: ['High', 'Medium', 'Low'],
+        type: Number,
+        enum: [0, 1, 2],
     },
     status: {
-        type: String,
-        enum: ['in progress', 'under review', 'rework', 'completed'],
+        type: Number,
+        enum: [0, 1, 2, 3],
     },
     startDate: String,
     endDate: String,
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'users',
+        ref: 'User',
+    },
+    createdAt: {
+        type: String,
+        default: new Date().toISOString(),
     },
 })
 
