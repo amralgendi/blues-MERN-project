@@ -7,7 +7,12 @@ const SigninPage: React.FC = () => {
 
   return (
     <>
-      {!codeSent && <SigninForm setCodeSent={setCodeSent} />}{" "}
+      <h1>Sign in</h1>
+      {!codeSent && (
+        <>
+          <SigninForm setCodeSent={setCodeSent} />
+        </>
+      )}
       {codeSent && <VerificationCode />}
     </>
   );

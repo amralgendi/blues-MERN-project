@@ -11,6 +11,7 @@ const ForgotPasswordPage: React.FC = () => {
   }, [mailSentMessage, navigate]);
   return (
     <>
+      <h1>Forgot Password</h1>
       {!mailSentMessage && (
         <ForgotPasswordForm setEmailSentMessage={setEmailSentMessage} />
       )}

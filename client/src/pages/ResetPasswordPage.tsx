@@ -5,7 +5,12 @@ const ResetPasswordPage: React.FC = () => {
   const { id, token } = useParams();
   console.log(id, token);
 
-  return <ResetPasswordForm id={id as string} token={token as string} />;
+  return (
+    <>
+      <h1>Reset Password</h1>
+      <ResetPasswordForm id={id as string} token={token as string} />
+    </>
+  );
 };
 
 export default ResetPasswordPage;
