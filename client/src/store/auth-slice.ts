@@ -1,8 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+interface IUser {
+  id: string;
+  email: string;
+  verified: boolean;
+}
+interface IAuthState {
+  isLoggedIn: boolean;
+  user: null | IUser;
+}
+
 const authSlice = createSlice({
   name: "auth",
-  initialState: { isLoggedIn: false, user: {} },
+  initialState: { isLoggedIn: false, user: null } as IAuthState,
   reducers: {
     signin(state, action) {
       state.isLoggedIn = true;
@@ -10,7 +20,7 @@ const authSlice = createSlice({
     },
     signout(state) {
       state.isLoggedIn = false;
-      state.user = {};
+      state.user = null;
     },
   },
 });

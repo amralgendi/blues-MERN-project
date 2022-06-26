@@ -1,48 +1,58 @@
-import React, { useEffect } from "react";
+import "semantic-ui-css/semantic.min.css";
 import "./App.css";
+
 import NavBar from "./components/NavBar";
-import HomePage from "./pages/HomePage";
-import { Routes, Route } from "react-router-dom";
+import { Container } from "semantic-ui-react";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Signin from "./pages/Signin";
+import Register from "./pages/Register";
+import Verify from "./pages/Verify";
+import jwtDecode from "jwt-decode";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { authActions } from "./store/auth-slice";
-import SigninPage from "./pages/SigninPage";
-import RegisterPage from "./pages/RegisterPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
-import jwt from "jsonwebtoken";
+import Forgot from "./pages/Forgot";
+import Reset from "./pages/Reset";
+import CreateTodo from "./pages/CreateTodo";
 
-const App: React.FC = () => {
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     const { id, email, verified } = jwt.decode(token) as jwt.JwtPayload;
-  //     dispatch(
-  //       authActions.signin({
-  //         id,
-  //         email,
-  //         verified,
-  //       })
-  //     );
-  //   }
-  // }, [dispatch]);
+interface IExactProp {
+  exact: boolean;
+}
+const exactProp: IExactProp = { exact: true };
+function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const { id, email, verified } = jwtDecode(token) as {
+        id: string;
+        email: string;
+        verified: boolean;
+      };
+      dispatch(authActions.signin({ id, email, verified }));
+    }
+  }, [dispatch]);
   return (
-    <div className="app">
+    <Container className="App">
       <NavBar />
-      <div className="container">
+      <Container className="content-container">
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/signin" element={<SigninPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route {...exactProp} path="/" element={<Home />} />
+          <Route {...exactProp} path="/signin" element={<Signin />} />
+          <Route {...exactProp} path="/register" element={<Register />} />
+          <Route {...exactProp} path="/verify" element={<Verify />} />
+          <Route {...exactProp} path="/forgot-password" element={<Forgot />} />
+          <Route {...exactProp} path="/create-todo" element={<CreateTodo />} />
           <Route
+            {...exactProp}
             path="/reset-password/:id/:token"
-            element={<ResetPasswordPage />}
+            element={<Reset />}
           />
         </Routes>
-      </div>
-    </div>
+      </Container>
+    </Container>
   );
-};
+}
 
 export default App;

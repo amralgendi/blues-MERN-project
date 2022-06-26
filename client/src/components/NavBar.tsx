@@ -1,42 +1,73 @@
-import React from "react";
-import "./NavBar.css";
-import { useSelector } from "react-redux";
-
+import React, { useEffect, useState } from "react";
+import { Menu, MenuItemProps } from "semantic-ui-react";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 import { authActions } from "../store/auth-slice";
-const NavBar: React.FC = () => {
-  const navigate = useNavigate();
+
+const NavBar = () => {
   const dispatch = useDispatch();
+  const [activeItem, setActiveItem] = useState("home");
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-  const handleLogout = (e: React.MouseEvent) => {
-    e.preventDefault();
-    localStorage.removeItem("token");
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.split("/")[1])
+      setActiveItem(location.pathname.split("/")[1]);
+  }, [location.pathname]);
+
+  const handleItemClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    { name }: MenuItemProps
+  ) => {
+    setActiveItem(name as string);
+  };
+  const handleLogout = () => {
     dispatch(authActions.signout());
-    navigate("/");
   };
   return (
-    <div className="nav-bar">
-      <div id="title">
-        <Link to="/">Todo App</Link>
-      </div>
-      <div className="links">
+    <Menu size="massive" secondary>
+      <Menu.Item
+        as={Link}
+        to="/"
+        name="home"
+        active={activeItem === "home"}
+        onClick={handleItemClick}
+      />
+      {isLoggedIn && (
+        <>
+          <Menu.Item
+            as={Link}
+            to="/create-todo"
+            name="create todo"
+            active={activeItem === "create todo"}
+            onClick={handleItemClick}
+          />
+        </>
+      )}
+
+      <Menu.Menu position="right">
         {!isLoggedIn && (
           <>
-            <Link to="/signin">Sign In</Link>
-            <Link to="/register">Register</Link>
+            <Menu.Item
+              as={Link}
+              to="/signin"
+              name="signin"
+              active={activeItem === "signin"}
+              onClick={handleItemClick}
+            />
+            <Menu.Item
+              as={Link}
+              to="/register"
+              name="register"
+              active={activeItem === "register"}
+              onClick={handleItemClick}
+            />
           </>
         )}
-        {isLoggedIn && (
-          <>
-            <a href="#" onClick={handleLogout}>
-              Log Out
-            </a>
-          </>
-        )}
-      </div>
-    </div>
+        {isLoggedIn && <Menu.Item name="logout" onClick={handleLogout} />}
+      </Menu.Menu>
+    </Menu>
   );
 };
 
